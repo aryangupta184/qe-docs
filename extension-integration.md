@@ -65,25 +65,25 @@ Why four pieces: MV3 **service workers can't capture audio or use the DOM**, so 
 sequenceDiagram
   participant U as User
   participant BG as background
-  participant OFF as offscreen
+  participant OS as offscreen
   participant AI as OpenAI
   participant FS as Firestore
   U->>BG: Start (popup / banner)
   BG->>BG: get tab streamId + Google token + OpenAI key
-  BG->>OFF: OFFSCREEN_START(streamId, token, key)
-  OFF->>OFF: capture tab+mic → mix → 24kHz PCM
-  OFF->>AI: realtime Whisper (verbatim Hinglish)
+  BG->>OS: OFFSCREEN_START(streamId, token, key)
+  OS->>OS: capture tab+mic, mix, 24kHz PCM
+  OS->>AI: realtime Whisper (verbatim Hinglish)
   loop every 15s
-    OFF->>AI: gpt-4o translate (Roman+English)
-    OFF->>AI: gpt-5.4-mini task extract (rolling window)
+    OS->>AI: gpt-4o translate (Roman+English)
+    OS->>AI: gpt-5.4-mini task extract (rolling window)
   end
   loop every 30s
-    OFF->>FS: checkpoint session
+    OS->>FS: checkpoint session
   end
   U->>BG: Stop
-  BG->>OFF: OFFSCREEN_STOP
-  OFF->>AI: final flush + reconcile
-  OFF->>FS: save session → History
+  BG->>OS: OFFSCREEN_STOP
+  OS->>AI: final flush + reconcile
+  OS->>FS: save session, History
 ```
 
 ---
