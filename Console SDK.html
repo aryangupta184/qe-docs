@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SDK_Final — Project Document</title>
+<style>
+:root{
+  --bg:#f7f9fc; --paper:#ffffff; --text:#172033; --muted:#64748b; --line:#dbe3ef;
+  --brand:#2563eb; --brand2:#0f766e; --chip:#eef4ff; --code:#f6f8fb; --shadow:0 22px 60px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef4ff 0,#f7f9fc 320px);color:var(--text);line-height:1.62}
+a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;max-width:1320px;margin:0 auto;padding:28px}
+.sidebar{position:sticky;top:20px;align-self:start;background:rgba(255,255,255,.84);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}
+.sidebar h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.sidebar a{display:block;padding:7px 9px;border-radius:10px;color:#334155;font-size:14px}.sidebar a:hover{background:var(--chip);text-decoration:none}
+main{min-width:0}.hero{background:radial-gradient(circle at top left,#dbeafe,transparent 34%),var(--paper);border:1px solid var(--line);border-radius:28px;padding:42px;box-shadow:var(--shadow);margin-bottom:24px}
+h1{font-size:clamp(34px,5vw,58px);line-height:1.02;margin:0 0 10px;letter-spacing:-.045em} .subtitle{font-size:18px;color:var(--muted);font-style:italic;margin:0 0 24px}.pillrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.pill{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:650}.summary{border-left:4px solid var(--brand);background:#f8fbff;border-radius:16px;padding:16px 18px;margin-top:18px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:30px;margin:22px 0;box-shadow:0 12px 34px rgba(15,23,42,.05)}
+h2{font-size:31px;line-height:1.15;margin:0 0 18px;letter-spacing:-.025em}.section-kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);font-weight:800;margin-bottom:8px}h3{font-size:20px;margin:24px 0 8px;letter-spacing:-.01em}h4{font-size:16px;margin:18px 0 6px}p{margin:9px 0}ul,ol{padding-left:1.35rem}li{margin:5px 0}.callout{border-left:4px solid var(--brand2);background:#f0fdfa;border-radius:16px;padding:14px 17px;margin:18px 0;color:#143a37}.warn{border-left-color:#f97316;background:#fff7ed;color:#7c2d12}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--chip);border:1px solid #dbeafe;color:#1e3a8a;border-radius:7px;padding:.13em .38em;font-size:.88em}pre{background:var(--code);border:1px solid var(--line);border-radius:16px;padding:16px;overflow:auto;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}pre code{background:transparent;border:0;padding:0;color:#1f2937;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:#fbfdff;border:1px solid var(--line);border-radius:18px;padding:18px}.card h4{margin-top:0;color:#0f172a}
+table{width:100%;border-collapse:separate;border-spacing:0;margin:14px 0;border:1px solid var(--line);border-radius:16px;overflow:hidden}th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}th{background:#f1f5f9;color:#0f172a;font-size:13px;text-transform:uppercase;letter-spacing:.05em}tr:last-child td{border-bottom:0}.diagram{background:#fbfdff;border:1px solid var(--line);border-radius:18px;padding:14px;margin:18px 0}.diagram-title{font-size:13px;color:var(--muted);font-weight:700;margin:0 0 10px}.mermaid{display:flex;justify-content:center;min-height:90px}.punchline{font-weight:760;color:#0f172a}.footer{color:var(--muted);text-align:center;padding:30px}
+@media(max-width:900px){.layout{display:block;padding:16px}.sidebar{position:static;margin-bottom:18px}.hero{padding:26px}section{padding:22px}.grid{grid-template-columns:1fr}}
+@media print{body{background:white}.layout{display:block;padding:0}.sidebar{display:none}section,.hero{box-shadow:none;break-inside:avoid}.diagram{break-inside:avoid}}
+</style>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    fontFamily: 'Inter, Arial, sans-serif', primaryColor: '#eff6ff', primaryTextColor: '#172033',
+    primaryBorderColor: '#93c5fd', lineColor: '#2563eb', secondaryColor: '#f0fdfa',
+    tertiaryColor: '#f8fafc', noteBkgColor: '#fff7ed', noteTextColor: '#172033'
+  }
+});
+</script>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar" aria-label="Table of contents">
+  <h3>Table of contents</h3>
+  <a href="#problem">1. What problem we are solving</a>
+  <a href="#features">2. Features and usages</a>
+  <a href="#demo">3. Demo</a>
+  <a href="#internals">4. Working internals</a>
+  <a href="#versioning">5. Versioning</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>SDK_Final — Project Document</h1>
+  <p class="subtitle">A single, clean reference: the problem, the features, a live demo, how it works internally, and the versioning model.</p>
+  <div class="pillrow"><span class="pill">Python</span><span class="pill">TypeScript</span><span class="pill">C++</span><span class="pill">OpenAPI</span><span class="pill">Safe retries</span><span class="pill">Versioned routing</span></div>
+  <div class="summary"><strong>Executive summary.</strong> SDK_Final replaces hand-written Console-backend access with generated, typed, traceable SDKs. One backend contract produces Python, TypeScript, and C++ clients with consistent auth, envelope handling, unwrapping, retries, observability headers, and per-page versioning.</div>
+</header>
+
+<section id="problem">
+  <div class="section-kicker">Section 1</div><h2>What problem we are solving</h2>
+  <p>Everyone on the desk talks to the Console backend, and almost everyone does it by hand. That hand-written access is the problem.</p>
+  <div class="grid">
+    <div class="card"><h4>Everyone writes custom clients</h4><p>Every quant, dev, and ops script re-implements the same plumbing: build the URL, attach auth, set content type, send, parse. The same 10–15 lines are copy-pasted across scripts, each subtly different.</p></div>
+    <div class="card"><h4>…in multiple languages</h4><p>The desk is polyglot: strategy/tooling in <strong>C++</strong>, research in <strong>Python</strong>, dashboards in <strong>TypeScript</strong>. Each language re-derives the same plumbing independently.</p></div>
+    <div class="card"><h4>Manual envelope handling</h4><p>The backend wraps every response as <code>{success, data, errors}</code>. Miss the check and <code>{"success": false}</code> can be silently treated as success.</p></div>
+    <div class="card"><h4>AI agents call raw HTTP</h4><p>Vibe-coding assistants guess URLs, auth, body envelopes, pagination, and retries. The classic failure mode is a confidently retried <code>POST</code>.</p></div>
+    <div class="card"><h4>No traceability</h4><p>Calls look like anonymous <code>requests</code>/<code>curl</code> hits. “Which client, version, box, and mode?” is unanswerable.</p></div>
+    <div class="card"><h4>Dangerous retries</h4><p>A flaky <code>503</code> is often handled with no retry, or a naive retry that re-sends <code>POST /place_order</code> and can double a position.</p></div>
+  </div>
+  <pre><code>{ "success": true,  "data": &lt;payload&gt; }
+{ "success": false, "errors": &lt;message&gt; }</code></pre>
+  <div class="diagram"><p class="diagram-title">The problem, visualized</p><pre class="mermaid">flowchart LR
+    py[&quot;Python notebook&quot;] --&gt; pyc[&quot;its own auth + envelope&lt;br/&gt;+ unwrap + retry&quot;]
+    cpp[&quot;C++ tool&quot;] --&gt; cppc[&quot;its own auth + envelope&lt;br/&gt;+ unwrap + retry&quot;]
+    ts[&quot;TS dashboard&quot;] --&gt; tsc[&quot;its own auth + envelope&lt;br/&gt;+ unwrap + retry&quot;]
+
+    pyc --&gt; backend[&quot;Console backend&lt;br/&gt;anonymous · un-versioned · inconsistent&quot;]
+    cppc --&gt; backend
+    tsc --&gt; backend
+
+    classDef source fill:#232528,stroke:#3a3f44,color:#f2f4f8;
+    classDef plumbing fill:#2c2f33,stroke:#3a3f44,color:#f2f4f8;
+    classDef backend fill:#303236,stroke:#4a4f55,color:#f2f4f8;
+    class py,cpp,ts source;
+    class pyc,cppc,tsc plumbing;
+    class backend backend;</pre></div>
+  <div class="callout"><strong>In short:</strong> hand-rolled API access across three languages and a fast-moving backend creates duplicated effort, silent breakage, un-attributable traffic, and money-bug risk.</div>
+</section>
+
+<section id="features">
+  <div class="section-kicker">Section 2</div><h2>Features and usages</h2>
+  <p>SDK_Final generates one correct, typed, self-identifying client <strong>per language, per backend page</strong>, straight from the backend’s own API contract.</p>
+  <h3>Auto-generated help text: full ephemeral-DB pipeline</h3>
+  <p>Every SDK ships a <code>&lt;PAGE&gt;_SDK_MIGRATION.md</code> with generation, installation, launch instructions, runnable examples, endpoint docs, parameter tables, and method-level docstrings. It is not hand-written: <code>drf-spectacular</code> runs against a throwaway SQLite DB, emits <code>openapi.yaml</code>, and the docs are rendered from that same spec.</p>
+  <h3>Vibe-coding support</h3>
+  <ul><li>Agents call <code>sdk.&lt;resource&gt;.&lt;method&gt;(...)</code>, never raw HTTP.</li><li>Auth, body envelopes, unwraps, and retry policy are handled by the SDK.</li><li>“Pull today’s holidays and place a hedge” becomes a few method calls instead of fragile request code.</li></ul>
+  <h3>One contract → three typed clients</h3>
+  <p>A single <code>openapi.yaml</code> drives Python typed models, TypeScript <code>schema.d.ts</code>, and C++ <code>nlohmann::json</code>. All three share one response contract and retry policy.</p>
+  <div class="diagram"><p class="diagram-title">One contract, three clients</p><pre class="mermaid">flowchart TB
+    drf[&quot;Backend DRF viewsets&quot;] --&gt; spec[&quot;openapi.yaml&lt;br/&gt;(one contract)&quot;]
+    spec --&gt; py[&quot;Python&lt;br/&gt;typed models&quot;]
+    spec --&gt; ts[&quot;TypeScript&lt;br/&gt;schema.d.ts&quot;]
+    spec --&gt; cpp[&quot;C++&lt;br/&gt;nlohmann::json&quot;]
+    py --&gt; same[&quot;same unwrap + same retry + same headers&lt;br/&gt;= identical behavior on the wire&quot;]
+    ts --&gt; same
+    cpp --&gt; same
+
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef strong fill:#30343a,stroke:#4a4f55,color:#f2f4f8;
+    class drf,spec,py,ts,cpp box;
+    class same strong;</pre></div>
+  <h3>Safe retries: idempotent-only, with tests that prove it</h3>
+  <table><tr><th>Aspect</th><th>Policy</th></tr><tr><td>Retried methods</td><td><strong>Idempotent only:</strong> <code>GET</code>, <code>HEAD</code>, <code>PUT</code>, <code>DELETE</code>; never <code>POST</code>/<code>PATCH</code>.</td></tr><tr><td>Retried conditions</td><td>Transport errors and HTTP <code>408</code>, <code>425</code>, <code>429</code>, <code>503</code>.</td></tr><tr><td>Backoff</td><td>Full-jitter exponential: <code>random(0, min(cap, base × 2^attempt))</code>.</td></tr><tr><td>Retry-After</td><td>Honored for integer seconds or HTTP-date.</td></tr><tr><td>Stop conditions</td><td>Three retries, four total tries, and a 30-second elapsed budget.</td></tr></table>
+  <div class="diagram"><p class="diagram-title">Retry decision tree</p><pre class="mermaid">flowchart TB
+    A[&quot;send request&quot;] --&gt; B{&quot;Transport error OR&lt;br/&gt;status in 408 / 425 / 429 / 503?&quot;}
+    B -- &quot;no&quot; --&gt; C[&quot;return → unwrap&quot;]
+    B -- &quot;yes&quot; --&gt; D{&quot;idempotent method?&lt;br/&gt;GET / HEAD / PUT / DELETE&quot;}
+    D -- &quot;no — POST / PATCH&quot; --&gt; E[&quot;never retry → raise&quot;]
+    D -- &quot;yes&quot; --&gt; F{&quot;attempts &lt; 3 AND&lt;br/&gt;elapsed + sleep &lt; 30s?&quot;}
+    F -- &quot;no&quot; --&gt; G[&quot;stop → return last / raise&quot;]
+    F -- &quot;yes&quot; --&gt; H[&quot;sleep max(Retry-After, full-jitter backoff)&quot;]
+    H --&gt; A
+
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef decision fill:#2e3338,stroke:#3a3f44,color:#f2f4f8;
+    classDef danger fill:#3b2828,stroke:#7a3d3d,color:#ffecec;
+    class A,C,G,H box;
+    class B,D,F decision;
+    class E danger;</pre></div>
+  <p>Tests use <code>httpx.MockTransport</code>: 503-then-success, Retry-After, exhausted retries, POST-not-retried, non-retryable status, success-false domain errors, transport errors, and elapsed-deadline stopping.</p>
+  <h3>Logging the SDK environment</h3>
+  <table><tr><th>Header</th><th>Meaning</th><th>Example</th></tr><tr><td><code>X-QE-SDK-Version</code></td><td>integer SDK version</td><td><code>2</code></td></tr><tr><td><code>X-QE-SDK-Page</code></td><td>which page / SDK</td><td><code>holiday</code></td></tr><tr><td><code>X-QE-SDK-Lang</code></td><td>client language</td><td><code>python / typescript / cpp</code></td></tr><tr><td><code>X-QE-SDK-Env</code></td><td>runtime class</td><td><code>ci / server / user / unknown</code></td></tr><tr><td><code>X-QE-SDK-Session</code></td><td>how invoked</td><td><code>ssh / tty / noninteractive</code></td></tr><tr><td><code>X-QE-SDK-Host</code></td><td>local hostname</td><td><code>sg-submit-03</code></td></tr></table>
+  <div class="diagram"><p class="diagram-title">Identity headers into request logs</p><pre class="mermaid">flowchart LR
+    call[&quot;any SDK call&lt;br/&gt;+ X-QE-SDK-* headers&quot;] --&gt; mw[&quot;SdkContextMiddleware&quot;]
+    mw --&gt; req[&quot;request.sdk&lt;br/&gt;version · page · lang · env · session · host&quot;]
+    req --&gt; log[&quot;request log&quot;]
+    log --&gt; dash[&quot;version-adoption dashboards&quot;]
+    log --&gt; spike[&quot;error-spike attribution&lt;br/&gt;(which version / lang / box)&quot;]
+
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef out fill:#30343a,stroke:#4a4f55,color:#f2f4f8;
+    class call,mw,req,log box;
+    class dash,spike out;</pre></div>
+  <h3>Versioning pipeline and standalone SDKs</h3>
+  <p>Each page is versioned as an integer and bumped automatically when its API contract changes. SDK generation is standalone: Django is used only to dump the spec against a throwaway DB, generated clients depend only on their target runtime plus HTTP/fetch/json dependencies, and backend changes preserve old routes via advisory headers.</p>
+</section>
+
+<section id="demo">
+  <div class="section-kicker">Section 3</div><h2>Demo</h2>
+  <p><strong>Scenario:</strong> onboard a new exchange holiday. The demo exercises Python list → create → update, then proves the same backend is reachable from a latency-sensitive C++ smoke test. Two endpoints each, GET and POST.</p>
+  <div class="diagram"><p class="diagram-title">Demo flow at a glance</p><pre class="mermaid">sequenceDiagram
+    participant You
+    participant SDK as sdk (python / c++)
+    participant Backend as Console backend
+
+    You-&gt;&gt;SDK: calendar_holiday.list()
+    SDK-&gt;&gt;Backend: GET /calendar_holiday/ (Bearer + X-QE-SDK-*)
+    Backend--&gt;&gt;SDK: {success, data}
+    SDK--&gt;&gt;You: data (unwrapped)
+
+    You-&gt;&gt;SDK: calendar_holiday.create(created_by, date, reason)
+    SDK-&gt;&gt;Backend: POST /calendar_holiday/ {&quot;post&quot;: fields}
+    Backend--&gt;&gt;SDK: {success, data}
+    SDK--&gt;&gt;You: created row
+
+    You-&gt;&gt;SDK: calendar_holiday.update(id, reason)
+    SDK-&gt;&gt;Backend: PATCH /calendar_holiday/{id}/ {&quot;patch&quot;: fields}
+    Backend--&gt;&gt;SDK: {success, data}
+    SDK--&gt;&gt;You: updated row</pre></div>
+  <h3>Setup once</h3><pre><code>cd SDK_Final
+python generate_sdk.py --page holiday --languages python,cpp</code></pre>
+  <h3>Part A — Python: list, create, update</h3><pre><code>cd generated/holiday/python
+pip install --user --no-build-isolation -e sdk_generated/
+./start_holiday_sdk.sh
+
+existing = sdk.calendar_holiday.list(limit=5)
+created = sdk.calendar_holiday.create(
+    created_by="aryan",
+    date="2026-11-08",
+    reason="Diwali",
+)
+updated = sdk.calendar_holiday.update(
+    id=created["id"],
+    reason="Diwali (Laxmi Pujan)",
+)</code></pre>
+  <p><strong>What happened for free:</strong> JWT bearer header, body envelopes, envelope unwrap, idempotent-only retries, and SDK identity headers.</p>
+  <h3>Part B — C++: smoke test and one write</h3><pre><code>cd ../cpp
+cmake -S . -B build &amp;&amp; cmake --build build -j
+./start_holiday_sdk.sh</code></pre>
+  <pre><code>OK  calendar_holiday.list        len=12
+OK  holiday_application.list     len=4
+OK  holiday_config.list          len=1
+OK  holiday_pairs.list           len=7</code></pre>
+  <pre><code>#include "holiday_sdk.hpp"
+using namespace holiday_sdk;
+
+int main() {
+    auto sdk = SDK::from_env();
+    auto rows = sdk.calendar_holiday.list();
+    auto created = sdk.calendar_holiday.create({
+        {"created_by", "aryan"}, {"date", "2026-11-08"}, {"reason", "Diwali"}
+    });
+}</code></pre>
+  <div class="callout"><span class="punchline">Punchline:</span> Python and C++ hit the same endpoints with the same auth, envelope, unwrap, retry semantics, and observability headers. The real backend is stamped with <code>X-QE-SDK-Version/Page/Lang/Env/Session/Host</code>.</div>
+</section>
+
+<section id="internals">
+  <div class="section-kicker">Section 4</div><h2>Working internals</h2>
+  <p>The pipeline lives in a modular <code>sdkgen</code> package behind a thin <code>generate_sdk.py</code> entry point.</p>
+  <div class="diagram"><p class="diagram-title">Generation pipeline</p><pre class="mermaid">flowchart TB
+    cli[&quot;generate_sdk.py / sdkgen.cli&lt;br/&gt;(--page, --languages)&quot;] --&gt; disc[&quot;discovery.py&lt;br/&gt;namespace / module / prefix&quot;]
+    disc --&gt; specpy[&quot;spec.py&lt;br/&gt;drf-spectacular on ephemeral SQLite&quot;]
+    specpy --&gt; contract[&quot;openapi.yaml (the contract)&quot;]
+    contract --&gt; model[&quot;openapi.py + model.py&lt;br/&gt;resources + operations&quot;]
+    contract --&gt; env[&quot;envelopes.py&lt;br/&gt;AST: which methods need {post/patch}&quot;]
+    model --&gt; emit[&quot;emit_python / emit_typescript / emit_cpp&lt;br/&gt;+ docs.py (help text)&quot;]
+    env --&gt; emit
+    emit --&gt; generated[&quot;generated/&lt;page&gt;/{python, typescript, cpp}/&quot;]
+
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef output fill:#30343a,stroke:#4a4f55,color:#f2f4f8;
+    class cli,disc,specpy,contract,model,env,emit box;
+    class generated output;</pre></div>
+  <h3>CLI entry point</h3>
+  <p><code>generate_sdk.py</code> re-exports <code>sdkgen.cli.main</code>. The CLI takes <code>--page</code>, <code>--languages</code>, optional <code>--skip-spec</code>, and per-page <code>--namespace</code>/<code>--module</code>. Failures are isolated per page, so one broken page cannot stop the other pages from shipping.</p>
+  <h3>Why <code>openapi.yaml</code>?</h3>
+  <ol><li>It is the thing clients are emitted from: one contract, three languages, guaranteed consistent.</li><li>It is the thing diffed to detect changes for versioning.</li></ol>
+  <h3>DRF-spectacular + custom schemas on a throwaway DB</h3>
+  <p><code>spec.py</code> writes ephemeral settings, disables migrations, registers the API URLs, runs Django commands against SQLite, and dumps <code>openapi.yaml</code>. That spec is then parsed into resources and operations.</p>
+  <h3>Template and client generation</h3>
+  <p>Templating is dependency-free. Python packages use <code>openapi-python-client</code> plus a wrapper; TypeScript emits <code>package.json</code>, <code>tsconfig.json</code>, and schema types; C++ emits a CMake project with <code>nlohmann::json</code>.</p>
+  <h3>Auth, unwrap, retries, and headers</h3>
+  <p>All four are generated into every runtime: env-driven auth, startup identity detection, shared retrying HTTP clients, and an unwrap layer that returns <code>data</code> or raises loudly on <code>success: false</code> / <code>errors</code>.</p>
+  <div class="diagram"><p class="diagram-title">Runtime call layers</p><pre class="mermaid">sequenceDiagram
+    participant R as resource method
+    participant Retry as RetryingClient
+    participant HTTP as shared httpx client
+    participant B as backend
+
+    R-&gt;&gt;Retry: post(&quot;/res&quot;, json={&quot;post&quot;: fields})
+    Retry-&gt;&gt;HTTP: send [idempotent-gated retry on 408/425/429/503]
+    HTTP-&gt;&gt;B: add Bearer token + X-QE-SDK-* headers&lt;br/&gt;HTTP request
+    B--&gt;&gt;HTTP: {success, data, errors}
+    HTTP--&gt;&gt;Retry: response
+    Retry--&gt;&gt;R: response
+    R--&gt;&gt;R: unwrap() → return data or raise loudly</pre></div>
+</section>
+
+<section id="versioning">
+  <div class="section-kicker">Section 5</div><h2>Versioning</h2>
+  <h3>The manifest is the source of truth</h3>
+  <pre><code>{
+  "pages": {
+    "holiday":  { "version": 1, "languages": ["python", "typescript", "cpp"] },
+    "automate": { "version": 1, "languages": ["python", "typescript", "cpp"] }
+  }
+}</code></pre>
+  <p><code>sdk_manifest.json</code> drives both all-page generation and the versioner. Onboarding a page is one line at <code>version: 1</code>.</p>
+  <h3>Full pipeline: fetch artifacts, as CI runs in CI today</h3>
+  <div class="diagram"><p class="diagram-title">Versioning pipeline</p><pre class="mermaid">flowchart TB
+    edit[&quot;Dev edits a serializer / endpoint&quot;] --&gt; push[&quot;git push (any branch)&quot;]
+    push --&gt; ci[&quot;CI `sdk` job&quot;]
+    ci --&gt; fetch[&quot;git fetch origin $CI_DEFAULT_BRANCH&lt;br/&gt;(read-only baseline)&quot;]
+    fetch --&gt; regen[&quot;regenerate openapi.yaml from CURRENT code&quot;]
+    regen --&gt; diff{&quot;spec differs from&lt;br/&gt;default branch?&quot;}
+    diff -- &quot;no (pure refactor)&quot; --&gt; nobump[&quot;no bump&quot;]
+    diff -- &quot;yes (real change)&quot; --&gt; bump[&quot;version = default-branch + 1&quot;]
+    bump --&gt; sdk[&quot;regenerate full SDK (py/ts/cpp) at vN&lt;br/&gt;+ # vN CHANGELOG.md&quot;]
+    sdk --&gt; publish[&quot;publish generated/ + manifest as CI artifacts&quot;]
+
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef decision fill:#2e3338,stroke:#3a3f44,color:#f2f4f8;
+    class edit,push,ci,fetch,regen,nobump,bump,sdk,publish box;
+    class diff decision;</pre></div>
+  <ul><li>Baseline is read via <code>git show</code>/<code>fetch</code>, not by mutating the repo.</li><li>State is detected by parsed-YAML equality against the baseline spec.</li><li>Only real API changes bump; pure refactors do not.</li><li>Broken pages are skipped unless strict mode is requested.</li><li>CI uploads generated SDKs and manifests as artifacts; no commits, pushes, or protected-branch access are needed.</li></ul>
+  <h3>Why “stable vs beta” channels do not work here</h3>
+  <p>Versioning is per-page and baseline-relative. There is no single global release line where “stable vs beta” makes sense. Branch artifacts are ephemeral, and a persistent beta channel adds state without solving the core problem.</p>
+  <h3>Better than commit-back: publish to S3/SG and fetch via API</h3>
+  <p>CI should upload bundles under versioned keys such as <code>sdk/&lt;page&gt;/v&lt;N&gt;/...</code>, then POST the latest version to a small service or Redis. Consumers fetch <code>/sdk/&lt;page&gt;/latest</code> and then download the matching bundle.</p>
+  <div class="diagram"><p class="diagram-title">Publish and fetch model</p><pre class="mermaid">flowchart LR
+    ci[&quot;CI build (default branch)&quot;] --&gt; s3[&quot;upload bundle — S3 / SG&lt;br/&gt;sdk/&lt;page&gt;/vN/&quot;]
+    ci --&gt; api[&quot;POST latest version&lt;br/&gt;version API / Redis&quot;]
+    consumer[&quot;consumer / installer / CI&quot;] --&gt; latest[&quot;GET /sdk/&lt;page&gt;/latest&quot;]
+    latest --&gt; api
+    latest --&gt; pull[&quot;pull bundle from S3 / SG&quot;]
+    pull --&gt; s3
+
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef store fill:#30343a,stroke:#4a4f55,color:#f2f4f8;
+    class ci,consumer,latest,pull box;
+    class s3,api store;</pre></div>
+  <h3>Routing versions via <code>SdkContextMiddleware</code></h3>
+  <p>For compatibility, one backend endpoint must serve multiple live versions. The generated SDK sends <code>X-QE-SDK-Version</code>, and middleware parses it into <code>request.sdk</code>. A dispatch map routes major versions to version-specific handlers; old clients keep working while new clients use new fields/behavior.</p>
+  <table><tr><th>Caller header</th><th>Routed to</th><th>What it sees</th></tr><tr><td><code>X-QE-SDK-Version: 1</code></td><td><code>v1</code> legacy handler</td><td>original response shape</td></tr><tr><td><code>X-QE-SDK-Version: 30</code></td><td><code>v30</code> handler</td><td>v30 contract</td></tr><tr><td><code>X-QE-SDK-Version: 40</code></td><td><code>v40</code> latest handler</td><td>new fields/behavior</td></tr></table>
+  <pre><code>def dispatch(request, *args, **kwargs):
+    version = request.sdk.version
+    handler = VERSION_HANDLERS.get(version, VERSION_HANDLERS[SDK_DEFAULT_VERSION])
+    return handler(request, *args, **kwargs)</code></pre>
+  <div class="diagram"><p class="diagram-title">Version-aware routing</p><pre class="mermaid">flowchart LR
+    c1[&quot;client v1&quot;] --&gt; req[&quot;REQ&quot;]
+    c30[&quot;client v30&quot;] --&gt; req
+    c40[&quot;client v40&quot;] --&gt; req
+    req --&gt; mw[&quot;SdkContextMiddleware&lt;br/&gt;reads request.sdk.version&quot;]
+    mw --&gt; choice{&quot;version → handler map&lt;br/&gt;(by major)&quot;}
+    choice -- &quot;1&quot; --&gt; h1[&quot;v1 handler&quot;] --&gt; contract1[&quot;v1 contract&lt;br/&gt;(unchanged)&quot;]
+    choice -- &quot;30&quot; --&gt; h30[&quot;v30 handler&quot;] --&gt; contract30[&quot;v30 contract&quot;]
+    choice -- &quot;40 (latest)&quot; --&gt; h40[&quot;v40 handler&quot;] --&gt; contract40[&quot;v40 contract&lt;br/&gt;(new fields)&quot;]
+
+    classDef client fill:#222528,stroke:#3a3f44,color:#f2f4f8;
+    classDef box fill:#26292d,stroke:#3a3f44,color:#f2f4f8;
+    classDef decision fill:#2e3338,stroke:#3a3f44,color:#f2f4f8;
+    classDef out fill:#30343a,stroke:#4a4f55,color:#f2f4f8;
+    class c1,c30,c40 client;
+    class req,mw,h1,h30,h40 box;
+    class choice decision;
+    class contract1,contract30,contract40 out;</pre></div>
+  <div class="callout warn">These headers remain advisory hints for routing/logging — never authentication or authorization. Routing on them is a compatibility convenience, not a security boundary.</div>
+</section>
+<footer class="footer">SDK_Final light-themed HTML reference with Mermaid diagrams.</footer>
+</main></div>
+</body></html>
